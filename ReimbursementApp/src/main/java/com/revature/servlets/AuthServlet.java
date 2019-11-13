@@ -18,7 +18,7 @@ public class AuthServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println(req.getRequestURL());
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
 		resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 		resp.addHeader("Access-Control-Allow-Headers",
 				"Origin, Methods, Credentials, X-Requested-With, Content-Type, Accept");
@@ -32,7 +32,7 @@ public class AuthServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("uri = " + req.getRequestURI());
-		if ("/ReimbursementApp/auth/login".equals(req.getRequestURI())) {
+		if ("/ReimbursementApp/auth".equals(req.getRequestURI())) {
 			ObjectMapper om = new ObjectMapper();
 			User credentials = (User) om.readValue(req.getReader(), User.class);
 			User loggedInUser = userDao.findByUsernameAndPassword(credentials.getErs_username(), credentials.getErs_password());
@@ -50,7 +50,7 @@ public class AuthServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		if ("/PokemonApi/auth/session-user".equals(req.getRequestURI())) {
+		if ("/ReimbursementApp/auth/session-user".equals(req.getRequestURI())) {
 			ObjectMapper om = new ObjectMapper();
 			String json = om.writeValueAsString(req.getSession().getAttribute("user"));
 			resp.getWriter().write(json);
