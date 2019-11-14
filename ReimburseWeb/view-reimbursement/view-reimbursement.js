@@ -1,4 +1,5 @@
 let currentUser;
+
 function newPokemonSubmit(event) {
     event.preventDefault(); // stop page from refreshing
     console.log('submitted');
@@ -29,43 +30,43 @@ function addPokemonToTableSafe(reimburse) {
 
     // create all the td elements and append them to the row
     const reimid = document.createElement('td');
-    reimid.innerText = 1;
+    reimid.innerText = reimburse.reimb_id;
     row.appendChild(reimid);
 
     const amount = document.createElement('td');
-    amount.innerText = reimburse.amount;
+    amount.innerText = reimburse.reimb_amount;
     row.appendChild(amount);
 
     const time1 = document.createElement('td');
-    time1.innerText = "Time";
+    time1.innerText = new Date(reimburse.reimb_submitted);
     row.appendChild(time1);
 
     const time2 = document.createElement('td');
-    time2.innerText = "Time";
+    time2.innerText = new Date(reimburse.reimb_resolved);
     row.appendChild(time2);
 
     const descr = document.createElement('td');
-    descr.innerText = reimburse.descrip;
+    descr.innerText = reimburse.reimb_description;
     row.appendChild(descr);
 
     const receipt = document.createElement('td');
-    receipt.innerText = "";
+    receipt.innerText = reimburse.reimb_receipt;
     row.appendChild(receipt);
 
     const author = document.createElement('td');
-    author.innerText = reimburse.id;
+    author.innerText = reimburse.reimb_author;
     row.appendChild(author);
 
     const resolver = document.createElement('td');
-    resolver.innerText = "";
+    resolver.innerText = reimburse.reimb_resolver;
     row.appendChild(resolver);
 
     const status = document.createElement('td');
-    status.innerText = 2;
+    status.innerText = reimburse.reimb_status_id;
     row.appendChild(status);
 
     const typ = document.createElement('td');
-    typ.innerText = reimburse.type;
+    typ.innerText = reimburse.reimb_type_id;
     row.appendChild(typ);
 
     // append the row into the table
@@ -76,15 +77,15 @@ function addPokemonToTable(pokemon) {
     document.getElementById('pokemon-table-body').innerHTML += `
     <tr>
         <td>1</td>
-        <td>${reimburse.amount}</td>
+        <td>${reimburse.reimb_amount}</td>
         <td>"Time"</td>
         <td>"Time"</td>
-        <td>${reimburse.descrip}</td>
+        <td>${reimburse.reimb_description}</td>
         <td> </td>
-        <td>${reimburse.id}</td>
+        <td>${reimburse.reimb_author}</td>
         <td> </td>
         <td>2</td>
-        <td>${reimburse.type}</td>
+        <td>${reimburse.reimb_type_id}</td>
     </tr>
     `;
 }
@@ -97,16 +98,16 @@ function getReimbursementsFromInputs() {
     const reimType = document.getElementById('pokemon-level-input').value;
 
     const reimburse = {
-        id : reimId,
-        amount: reimAmount,
-        descrip: reimDescrip,
-        type: reimType
+        reimb_author: reimId,
+        reimb_amount: reimAmount,
+        reimb_description: reimDescrip,
+        reimb_type_id: reimType
     }
     return reimburse;
 }
 
 function refreshTable() {
-    fetch('http://localhost:8080/PokemonApi/pokemon')
+    fetch('http://localhost:8080/ReimbursementApp/reimbursements')
         .then(res => res.json())
         .then(data => {
             data.forEach(addPokemonToTableSafe)
