@@ -30,14 +30,10 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown"
+                    <a id="users-name" class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">Dropdown</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown05">
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <a class="dropdown-item" href="#" active>View Pokemon</a>
-                        <a class="dropdown-item" href="#">Catch Pokemon</a>
-                        <a class="dropdown-item" href="#">Pokemon Types</a>
-                        <a class="dropdown-item" href="#">Release Pokemon</a>
+                        <a class="dropdown-item" href="#">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -59,23 +55,14 @@
             </tr>
         </thead>
         <tbody id="pokemon-table-body">
-            <tr>
-                <td>Nic</td>
-                <td>Ghost</td>
-                <td>50</td>
-                <td>22</td>
-                <td>Nic</td>
-            </tr>
+            
         </tbody>
     </table>
 
     <h1>Submit a Reimbursement</h1>
 
     <form id="new-pokemon-form" onsubmit="newPokemonSubmit(event)">
-        <div class="form-group">
-            <label for="pokemon-name-input">Employee Id:</label>
-            <input type="text" class="form-control" id="pokemon-name-input" placeholder="1">
-        </div>
+
         <div class="form-group">
             <label for="pokemon-amount-input">Amount</label>
             <input type="text" class="form-control" id="pokemon-amount-input" placeholder="$$$">

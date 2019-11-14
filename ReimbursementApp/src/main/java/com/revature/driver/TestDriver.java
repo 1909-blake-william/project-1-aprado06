@@ -20,7 +20,7 @@ public class TestDriver {
 //		for(User a: output) {
 //			System.out.println(a);
 //		}
-		//System.out.println(userdao.findByUsernameAndPassword("nf06","emp2"));
+		System.out.println(userdao.findByUsernameAndPassword("nf06","emp2"));
 		//reimburse.createReimb(2, 30, "housing", 1);
 		List<Reimbursement> output = new ArrayList<Reimbursement>();
 		output = reimburse.viewAll();

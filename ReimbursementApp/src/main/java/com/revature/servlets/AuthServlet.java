@@ -42,6 +42,7 @@ public class AuthServlet extends HttpServlet {
 			} else {
 				resp.setStatus(201);
 				req.getSession().setAttribute("user", loggedInUser);
+				System.out.println(loggedInUser);
 				resp.getWriter().write(om.writeValueAsString(loggedInUser));
 				return;
 			}
@@ -52,6 +53,7 @@ public class AuthServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if ("/ReimbursementApp/auth/session-user".equals(req.getRequestURI())) {
 			ObjectMapper om = new ObjectMapper();
+			//System.out.println(req.getSession().getAttribute("user"));
 			String json = om.writeValueAsString(req.getSession().getAttribute("user"));
 			resp.getWriter().write(json);
 		}

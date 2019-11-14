@@ -16,7 +16,7 @@ public interface ReimbursementDao {
 	
 	List<Reimbursement> viewByAuthorStatus(int author, int id);
 	
-	int createReimb (int id, float amount, String description, int type);
+	Reimbursement createReimb (int id, float amount, String description, int type);
 	
 	int resolveReimb (int reimid, int id, int status);
 	

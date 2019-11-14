@@ -12,7 +12,8 @@ function newPokemonSubmit(event) {
         headers: {
             'content-type': 'application/json'
         },
-        mode: 'cors'
+        mode: 'cors',
+        credentials: 'include'
     })
     .then(res => res.json())
     .then(data => {
@@ -92,13 +93,13 @@ function addPokemonToTable(pokemon) {
 
 
 function getReimbursementsFromInputs() {
-    const reimId = document.getElementById('pokemon-name-input').value;
+    //const reimId = document.getElementById('pokemon-name-input').value;
     const reimAmount = document.getElementById('pokemon-amount-input').value;
     const reimDescrip = document.getElementById('pokemon-hp-input').value;
     const reimType = document.getElementById('pokemon-level-input').value;
 
     const reimburse = {
-        reimb_author: reimId,
+        reimb_author: currentUser.ers_users_id,
         reimb_amount: reimAmount,
         reimb_description: reimDescrip,
         reimb_type_id: reimType
@@ -115,14 +116,14 @@ function refreshTable() {
         .catch(console.log);
 }
 
-/*
+
 function getCurrentUserInfo() {
-    fetch('http://localhost:8080/PokemonApi/auth', {
+    fetch('http://localhost:8080/ReimbursementApp/auth/session-user', {
         credentials: 'include'
     })
     .then(resp => resp.json())
     .then(data => {
-        document.getElementById('ers_username').innerText = data.username
+        document.getElementById('users-name').innerText = data.ers_username
         refreshTable();
         currentUser = data;
     })
@@ -132,4 +133,3 @@ function getCurrentUserInfo() {
 }
 
 getCurrentUserInfo();
-*/

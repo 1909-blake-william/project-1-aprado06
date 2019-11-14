@@ -116,7 +116,7 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 	}
 
 	@Override
-	public int createReimb(int id, float amount, String description, int type) {
+	public Reimbursement createReimb(int id, float amount, String description, int type) {
 		try (Connection c = ConnectionUtil.getConnection()) {
 
 			String query = "INSERT INTO ers_reimbursement (reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id )"
@@ -128,12 +128,27 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 			ps.setInt(3, id);
 			ps.setInt(4, type);
 
-			return ps.executeUpdate();
+			ps.executeUpdate();
+			
+			String query1 = "SELECT * FROM ers_reimbursement WHERE reimb_description = ?";
+			
+			PreparedStatement ps1 = c.prepareStatement(query1);
+			ps1.setString(1, description);
+
+			ResultSet rs = ps1.executeQuery();
+			Reimbursement out = null;
+			
+			while(rs.next()) {
+				out = extractReim(rs);
+			}
+			
+			return out;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
-			return 0;
+			Reimbursement o = new Reimbursement(); 
+			return o;
 		}
 	}
 
