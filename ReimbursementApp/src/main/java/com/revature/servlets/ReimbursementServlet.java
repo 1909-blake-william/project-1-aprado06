@@ -47,6 +47,18 @@ public class ReimbursementServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// read the pokemon from the request body
+		if ("/ReimbursementApp/reimbursements/update".equals(req.getRequestURI())) {
+			ObjectMapper om = new ObjectMapper();
+			Reimbursement p = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+
+			int o = reimDao.resolveReimb(p.getReimb_id(), p.getReimb_resolver(), p.getReimb_status_id());
+			//System.out.println(o);
+			
+			String json = om.writeValueAsString(o);
+
+			resp.getWriter().write(json);
+			resp.setStatus(201); // created status code
+		} else {
 		ObjectMapper om = new ObjectMapper();
 		Reimbursement p = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
 
@@ -57,7 +69,7 @@ public class ReimbursementServlet extends HttpServlet {
 
 		resp.getWriter().write(json);
 		resp.setStatus(201); // created status code
-
+		}
 	}
 	
 }
