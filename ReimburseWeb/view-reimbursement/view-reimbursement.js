@@ -134,6 +134,20 @@ function refreshTable() {
         .catch(console.log);
 }
 
+function logout(event) {
+    fetch ('http://localhost:8080/ReimbursementApp/auth/logout', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        mode: 'cors',
+        //credentials: 'include', // put credentials: 'include' on every request to use session info
+    })
+    .then (resp => {
+        getCurrentUserInfo();
+        window.location = '/ReimbursementApp/login.html';
+    })
+}
 
 function getCurrentUserInfo() {
     fetch('http://localhost:8080/ReimbursementApp/auth/session-user', {

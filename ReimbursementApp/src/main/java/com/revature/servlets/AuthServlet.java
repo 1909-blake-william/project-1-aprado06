@@ -32,7 +32,7 @@ public class AuthServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("uri = " + req.getRequestURI());
-		if ("/ReimbursementApp/auth".equals(req.getRequestURI())) {
+		if ("/ReimbursementApp/auth/login".equals(req.getRequestURI())) {
 			ObjectMapper om = new ObjectMapper();
 			User credentials = (User) om.readValue(req.getReader(), User.class);
 			User loggedInUser = userDao.findByUsernameAndPassword(credentials.getErs_username(), credentials.getErs_password());

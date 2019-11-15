@@ -8,7 +8,7 @@ function login(event) {
         ers_password
     };
 
-    fetch('http://localhost:8080/ReimbursementApp/auth', {
+    fetch('http://localhost:8080/ReimbursementApp/auth/login', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'

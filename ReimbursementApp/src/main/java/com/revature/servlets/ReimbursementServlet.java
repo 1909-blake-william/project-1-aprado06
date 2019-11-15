@@ -2,6 +2,7 @@ package com.revature.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -34,16 +35,46 @@ public class ReimbursementServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		List<Reimbursement> reims = new ArrayList<Reimbursement>();
+		String[] path = req.getRequestURI().split("/");
+		//System.out.println(Arrays.toString(path) + path[4]);
+		
+		if (path.length == 3) {
+			reims = reimDao.viewAll();
 
-		reims = reimDao.viewAll();
+			ObjectMapper om = new ObjectMapper();
+			String json = om.writeValueAsString(reims);
 
-		ObjectMapper om = new ObjectMapper();
-		String json = om.writeValueAsString(reims);
+			resp.addHeader("content-type", "application/json");
+			resp.getWriter().write(json);
+		} else if (path[3].equals("user")) {
+			reims = reimDao.viewByAuthor(Integer.valueOf(path[4]));
 
-		resp.addHeader("content-type", "application/json");
-		resp.getWriter().write(json);
+			ObjectMapper om = new ObjectMapper();
+			String json = om.writeValueAsString(reims);
+
+			resp.addHeader("content-type", "application/json");
+			resp.getWriter().write(json);
+		} else if (path[3].equals("status")) {
+			System.out.println(path);
+			reims = reimDao.viewByStatus(Integer.valueOf(path[4]));
+
+			ObjectMapper om = new ObjectMapper();
+			String json = om.writeValueAsString(reims);
+
+			resp.addHeader("content-type", "application/json");
+			resp.getWriter().write(json);
+		} else if (path[3].equals("user-status")) {
+			System.out.println(path);
+			reims = reimDao.viewByAuthorStatus(Integer.valueOf(path[4]), Integer.valueOf(path[5]));
+
+			ObjectMapper om = new ObjectMapper();
+			String json = om.writeValueAsString(reims);
+
+			resp.addHeader("content-type", "application/json");
+			resp.getWriter().write(json);
+		} 
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// read the pokemon from the request body
@@ -52,24 +83,25 @@ public class ReimbursementServlet extends HttpServlet {
 			Reimbursement p = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
 
 			int o = reimDao.resolveReimb(p.getReimb_id(), p.getReimb_resolver(), p.getReimb_status_id());
-			//System.out.println(o);
-			
+			// System.out.println(o);
+
 			String json = om.writeValueAsString(o);
 
 			resp.getWriter().write(json);
 			resp.setStatus(201); // created status code
 		} else {
-		ObjectMapper om = new ObjectMapper();
-		Reimbursement p = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
+			ObjectMapper om = new ObjectMapper();
+			Reimbursement p = (Reimbursement) om.readValue(req.getReader(), Reimbursement.class);
 
-		Reimbursement o = reimDao.createReimb(p.getReimb_author(), p.getReimb_amount(), p.getReimb_description(), p.getReimb_type_id());
-		//System.out.println(o);
-		
-		String json = om.writeValueAsString(o);
+			Reimbursement o = reimDao.createReimb(p.getReimb_author(), p.getReimb_amount(), p.getReimb_description(),
+					p.getReimb_type_id());
+			// System.out.println(o);
 
-		resp.getWriter().write(json);
-		resp.setStatus(201); // created status code
+			String json = om.writeValueAsString(o);
+
+			resp.getWriter().write(json);
+			resp.setStatus(201); // created status code
 		}
 	}
-	
+
 }
