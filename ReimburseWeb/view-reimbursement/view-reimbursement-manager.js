@@ -3,7 +3,7 @@ let currentUser;
 function newPokemonSubmit(event) {
     event.preventDefault(); // stop page from refreshing
     console.log('submitted');
-    
+
     const reimbursement = getReimbursementsFromInputs();
 
     fetch('http://localhost:8080/ReimbursementApp/reimbursements/update', {
@@ -15,13 +15,14 @@ function newPokemonSubmit(event) {
         mode: 'cors',
         credentials: 'include'
     })
-    .then(res => res.json())
-    .then(data => {
-        //addPokemonToTableSafe(data);
-        console.log(data);
-    })
-    .catch(err => console.log(err));
-    
+        .then(res => res.json())
+        .then(data => {
+            //addPokemonToTableSafe(data);
+            refreshTable();
+            console.log(data);
+        })
+        .catch(err => console.log(err));
+
 }
 
 function addPokemonToTableSafe(reimburse) {
@@ -43,7 +44,11 @@ function addPokemonToTableSafe(reimburse) {
     row.appendChild(time1);
 
     const time2 = document.createElement('td');
-    time2.innerText = new Date(reimburse.reimb_resolved);
+    if (!reimburse.reimb_resolved) {
+        time2.innerText = "Still pending"
+    } else {
+        time2.innerText = new Date(reimburse.reimb_resolved);
+    }
     row.appendChild(time2);
 
     const descr = document.createElement('td');
@@ -51,7 +56,7 @@ function addPokemonToTableSafe(reimburse) {
     row.appendChild(descr);
 
     const receipt = document.createElement('td');
-    receipt.innerText = reimburse.reimb_receipt;
+    receipt.innerText = "None";
     row.appendChild(receipt);
 
     const author = document.createElement('td');
@@ -59,15 +64,33 @@ function addPokemonToTableSafe(reimburse) {
     row.appendChild(author);
 
     const resolver = document.createElement('td');
-    resolver.innerText = reimburse.reimb_resolver;
+    if (!reimburse.reimb_resolver) {
+        resolver.innerText = "Still pending"
+    } else {
+        resolver.innerText = new Date(reimburse.reimb_resolver);
+    }
     row.appendChild(resolver);
 
     const status = document.createElement('td');
-    status.innerText = reimburse.reimb_status_id;
+    if (reimburse.reimb_status_id == 1) {
+        status.innerText = "Pending"
+    } else if (reimburse.reimb_status_id == 2) {
+        status.innerText = "Accepted";
+    } else if (reimburse.reimb_status_id == 3) {
+        status.innerText = "Denied";
+    }
     row.appendChild(status);
 
     const typ = document.createElement('td');
-    typ.innerText = reimburse.reimb_type_id;
+    if (reimburse.reimb_type_id == 1) {
+        typ.innerText = "Lodging"
+    } else if (reimburse.reimb_type_id == 2) {
+        typ.innerText = "Travel";
+    } else if (reimburse.reimb_type_id == 3) {
+        typ.innerText = "Food";
+    } else {
+        typ.innerText = "Other";
+    }
     row.appendChild(typ);
 
     // append the row into the table
@@ -101,15 +124,17 @@ function getCurrentUserInfo() {
     fetch('http://localhost:8080/ReimbursementApp/auth/session-user', {
         credentials: 'include'
     })
-    .then(resp => resp.json())
-    .then(data => {
-        document.getElementById('users-name').innerText = data.ers_username
-        refreshTable();
-        currentUser = data;
-    })
-    .catch(err => {
-        window.location = '/ReimbursementApp/login.html';
-    })
+        .then(resp => resp.json())
+        .then(data => {
+            document.getElementById('users-name').innerText = data.ers_username
+            refreshTable();
+            currentUser = data;
+        })
+        .catch(err => {
+            window.location = '/ReimbursementApp/login.html';
+        })
 }
+
+
 
 getCurrentUserInfo();
