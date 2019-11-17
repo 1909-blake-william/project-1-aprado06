@@ -31,7 +31,7 @@ function newPokemonSubmit2(event) {
 
     const reimbursement = getReimbursementsFromInputs2();
     console.log(reimbursement);
-    if (reimbursement.reimb_id != "" && reimbursement.reimb_status_id == "") {
+    if (reimbursement.reimb_id != "" && reimbursement.reimb_status_id == undefined) {
         console.log(reimbursement.reimb_id );
         fetch(`http://localhost:8080/ReimbursementApp/reimbursements/user/${reimbursement.reimb_id}/`)
         .then(res => res.json())
@@ -115,14 +115,14 @@ function addPokemonToTableSafe(reimburse) {
     row.appendChild(receipt);
 
     const author = document.createElement('td');
-    author.innerText = reimburse.reimb_author;
+    author.innerText = reimburse.reimb_author_name;
     row.appendChild(author);
 
     const resolver = document.createElement('td');
     if (!reimburse.reimb_resolver) {
         resolver.innerText = "Still pending"
     } else {
-        resolver.innerText = reimburse.reimb_resolver;
+        resolver.innerText = reimburse.reimb_resolver_name;
     }
     row.appendChild(resolver);
 

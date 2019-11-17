@@ -40,7 +40,7 @@ public class ReimbursementServlet extends HttpServlet {
 		
 		if (path.length == 3) {
 			reims = reimDao.viewAll();
-
+			System.out.println(reims);
 			ObjectMapper om = new ObjectMapper();
 			String json = om.writeValueAsString(reims);
 
@@ -48,7 +48,7 @@ public class ReimbursementServlet extends HttpServlet {
 			resp.getWriter().write(json);
 		} else if (path[3].equals("user")) {
 			reims = reimDao.viewByAuthor(Integer.valueOf(path[4]));
-
+			System.out.println((reims));
 			ObjectMapper om = new ObjectMapper();
 			String json = om.writeValueAsString(reims);
 

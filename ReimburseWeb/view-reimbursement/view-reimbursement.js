@@ -59,14 +59,14 @@ function addPokemonToTableSafe(reimburse) {
     row.appendChild(receipt);
 
     const author = document.createElement('td');
-    author.innerText = currentUser.ers_first_name;
+    author.innerText = reimburse.reimb_author_name;
     row.appendChild(author);
 
     const resolver = document.createElement('td');
     if (!reimburse.reimb_resolver) {
         resolver.innerText = "Still pending"
     } else {
-        resolver.innerText = reimburse.reimb_resolver;
+        resolver.innerText = reimburse.reimb_resolver_name;
     }
     row.appendChild(resolver);
 

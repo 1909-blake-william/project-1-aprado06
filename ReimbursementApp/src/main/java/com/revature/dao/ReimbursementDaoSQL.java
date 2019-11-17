@@ -25,13 +25,15 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 		int resolver = rs.getInt("reimb_resolver");
 		int status = rs.getInt("reimb_status_id");
 		int type = rs.getInt("reimb_type_id");
-		return new Reimbursement(id, amount, submitted, resolved, desc, receipt, rsUser, resolver, status, type);
+		String author = rs.getString(11);
+		String resolverName = rs.getString(12);
+		return new Reimbursement(id, amount, submitted, resolved, desc, receipt, rsUser, resolver, status, type, author, resolverName);
 	}
 	
 	@Override
 	public List<Reimbursement> viewAll() {
 		try (Connection c = ConnectionUtil.getConnection()) {
-			String query = "Select * from ers_reimbursement";
+			String query = "SELECT er.reimb_id, er.reimb_amount, er.reimb_submitted, er.reimb_resolved, er.reimb_description, er.reimb_receipt, er.reimb_author, er.reimb_resolver, er.reimb_status_id, er.reimb_type_id, eu.user_first_name, eu2.user_first_name FROM (ers_reimbursement er LEFT JOIN ers_users eu ON (er.reimb_author = eu.ers_users_id)) LEFT JOIN ers_users eu2 ON (er.reimb_resolver = eu2.ers_users_id)";
 
 			PreparedStatement ps = c.prepareStatement(query);
 
@@ -39,7 +41,7 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 			List<Reimbursement> reimburse = new ArrayList<Reimbursement>();
 			while(rs.next()) {
 				Reimbursement reim = new Reimbursement(rs.getInt("reimb_id"), rs.getFloat("reimb_amount"), rs.getTimestamp("reimb_submitted"), rs.getTimestamp("reimb_resolved"), rs.getString("reimb_description"), rs.getBlob("reimb_receipt"),
-						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"));
+						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"), rs.getString(11), rs.getString(12));
 				reimburse.add(reim);
 			}
 			return reimburse;
@@ -51,7 +53,11 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 	@Override
 	public List<Reimbursement> viewByStatus(int id) {
 		try (Connection c = ConnectionUtil.getConnection()) {
-			String query = "Select * from ers_reimbursement " + "WHERE reimb_status_id = ?";
+			String query = "SELECT er.reimb_id, er.reimb_amount, er.reimb_submitted, er.reimb_resolved, er.reimb_description, er.reimb_receipt, er.reimb_author, er.reimb_resolver, er.reimb_status_id, er.reimb_type_id, eu.user_first_name, eu2.user_first_name  FROM ers_reimbursement er\n" + 
+					"LEFT JOIN ers_users eu\n" + 
+					"ON er.reimb_author = eu.ers_users_id\n" + 
+					"LEFT JOIN ers_users eu2\n" + 
+					"ON er.reimb_resolver = eu2.ers_users_id\n" + "WHERE reimb_status_id = ?";
 
 			PreparedStatement ps = c.prepareStatement(query);
 			ps.setInt(1, id);
@@ -61,7 +67,7 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 			List<Reimbursement> reimburse = new ArrayList<Reimbursement>();
 			while(rs.next()) {
 				Reimbursement reim = new Reimbursement(rs.getInt("reimb_id"), rs.getFloat("reimb_amount"), rs.getTimestamp("reimb_submitted"), rs.getTimestamp("reimb_resolved"), rs.getString("reimb_description"), rs.getBlob("reimb_receipt"),
-						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"));
+						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"),rs.getString(11),rs.getString(12));
 				reimburse.add(reim);
 			}
 			return reimburse;
@@ -73,7 +79,11 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 	@Override
 	public List<Reimbursement> viewByAuthor(int author) {
 		try (Connection c = ConnectionUtil.getConnection()) {
-			String query = "Select * from ers_reimbursement " + "WHERE reimb_author = ?";
+			String query = "SELECT er.reimb_id, er.reimb_amount, er.reimb_submitted, er.reimb_resolved, er.reimb_description, er.reimb_receipt, er.reimb_author, er.reimb_resolver, er.reimb_status_id, er.reimb_type_id, eu.user_first_name, eu2.user_first_name  FROM ers_reimbursement er\n" + 
+					"LEFT JOIN ers_users eu\n" + 
+					"ON er.reimb_author = eu.ers_users_id\n" + 
+					"LEFT JOIN ers_users eu2\n" + 
+					"ON er.reimb_resolver = eu2.ers_users_id\n" + "WHERE reimb_author = ?";
 
 			PreparedStatement ps = c.prepareStatement(query);
 			ps.setInt(1, author);
@@ -83,7 +93,7 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 			List<Reimbursement> reimburse = new ArrayList<Reimbursement>();
 			while(rs.next()) {
 				Reimbursement reim = new Reimbursement(rs.getInt("reimb_id"), rs.getFloat("reimb_amount"), rs.getTimestamp("reimb_submitted"), rs.getTimestamp("reimb_resolved"), rs.getString("reimb_description"), rs.getBlob("reimb_receipt"),
-						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"));
+						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"), rs.getString(11), rs.getString(12));
 				reimburse.add(reim);
 			}
 			return reimburse;
@@ -95,7 +105,11 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 	@Override
 	public List<Reimbursement> viewByAuthorStatus(int author, int id) {
 		try (Connection c = ConnectionUtil.getConnection()) {
-			String query = "Select * from ers_reimbursement " + "WHERE reimb_author = ? AND reimb_status_id = ?";
+			String query = "SELECT er.reimb_id, er.reimb_amount, er.reimb_submitted, er.reimb_resolved, er.reimb_description, er.reimb_receipt, er.reimb_author, er.reimb_resolver, er.reimb_status_id, er.reimb_type_id, eu.user_first_name, eu2.user_first_name  FROM ers_reimbursement er\n" + 
+					"LEFT JOIN ers_users eu\n" + 
+					"ON er.reimb_author = eu.ers_users_id\n" + 
+					"LEFT JOIN ers_users eu2\n" + 
+					"ON er.reimb_resolver = eu2.ers_users_id\n" + "WHERE reimb_author = ? AND reimb_status_id = ?";
 
 			PreparedStatement ps = c.prepareStatement(query);
 			ps.setInt(1, author);
@@ -106,7 +120,7 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 			List<Reimbursement> reimburse = new ArrayList<Reimbursement>();
 			while(rs.next()) {
 				Reimbursement reim = new Reimbursement(rs.getInt("reimb_id"), rs.getFloat("reimb_amount"), rs.getTimestamp("reimb_submitted"), rs.getTimestamp("reimb_resolved"), rs.getString("reimb_description"), rs.getBlob("reimb_receipt"),
-						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"));
+						rs.getInt("reimb_author"), rs.getInt("reimb_resolver"), rs.getInt("reimb_status_id"), rs.getInt("reimb_type_id"),rs.getString(11),rs.getString(12));
 				reimburse.add(reim);
 			}
 			return reimburse;
@@ -130,7 +144,7 @@ public class ReimbursementDaoSQL implements ReimbursementDao {
 
 			ps.executeUpdate();
 			
-			String query1 = "SELECT * FROM ers_reimbursement WHERE reimb_description = ?";
+			String query1 = "SELECT er.reimb_id, er.reimb_amount, er.reimb_submitted, er.reimb_resolved, er.reimb_description, er.reimb_receipt, er.reimb_author, er.reimb_resolver, er.reimb_status_id, er.reimb_type_id, eu.user_first_name, eu2.user_first_name FROM (ers_reimbursement er LEFT JOIN ers_users eu ON (er.reimb_author = eu.ers_users_id)) LEFT JOIN ers_users eu2 ON (er.reimb_resolver = eu2.ers_users_id) WHERE er.reimb_description = ?";
 			
 			PreparedStatement ps1 = c.prepareStatement(query1);
 			ps1.setString(1, description);

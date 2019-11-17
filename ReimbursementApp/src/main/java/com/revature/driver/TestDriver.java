@@ -23,7 +23,7 @@ public class TestDriver {
 		System.out.println(userdao.findByUsernameAndPassword("nf06","emp2"));
 		//reimburse.createReimb(2, 30, "housing", 1);
 		List<Reimbursement> output = new ArrayList<Reimbursement>();
-		output = reimburse.viewAll();
+		output = reimburse.viewByAuthor(2);
 		for(Reimbursement a: output) {
 			System.out.println(a);
 		}

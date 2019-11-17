@@ -15,10 +15,13 @@ public class Reimbursement {
 	private int reimb_resolver;
 	private int reimb_status_id;
 	private int reimb_type_id;
+	private String reimb_author_name;
+	private String reimb_resolver_name; 
 	
+
 	public Reimbursement(int reimb_id, float reimb_amount, Timestamp reimb_submitted, Timestamp reimb_resolved,
 			String reimb_description, Blob reimb_receipt, int reimb_author, int reimb_resolver, int reimb_status_id,
-			int reimb_type_id) {
+			int reimb_type_id, String reimb_author_name, String reimb_resolver_name) {
 		super();
 		this.reimb_id = reimb_id;
 		this.reimb_amount = reimb_amount;
@@ -30,6 +33,8 @@ public class Reimbursement {
 		this.reimb_resolver = reimb_resolver;
 		this.reimb_status_id = reimb_status_id;
 		this.reimb_type_id = reimb_type_id;
+		this.reimb_author_name = reimb_author_name;
+		this.reimb_resolver_name = reimb_resolver_name;
 	}
 
 	public Reimbursement() {
@@ -117,14 +122,32 @@ public class Reimbursement {
 		this.reimb_type_id = reimb_type_id;
 	}
 
+	
+	public String getReimb_author_name() {
+		return reimb_author_name;
+	}
+
+	public void setReimb_author_name(String reimb_author_name) {
+		this.reimb_author_name = reimb_author_name;
+	}
+
+	public String getReimb_resolver_name() {
+		return reimb_resolver_name;
+	}
+
+	public void setReimb_resolver_name(String reimb_resolver_name) {
+		this.reimb_resolver_name = reimb_resolver_name;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Reimbursement [reimb_id=" + reimb_id + ", reimb_amount=" + reimb_amount + ", reimb_submitted="
 				+ reimb_submitted + ", reimb_resolved=" + reimb_resolved + ", reimb_description=" + reimb_description
 				+ ", reimb_receipt=" + reimb_receipt + ", reimb_author=" + reimb_author + ", reimb_resolver="
-				+ reimb_resolver + ", reimb_status_id=" + reimb_status_id + ", reimb_type_id=" + reimb_type_id + "]";
+				+ reimb_resolver + ", reimb_status_id=" + reimb_status_id + ", reimb_type_id=" + reimb_type_id
+				+ ", reimb_author_name=" + reimb_author_name + ", reimb_resolver_name=" + reimb_resolver_name + "]";
 	}
-	
 	
 	
 }
